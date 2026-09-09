@@ -1,0 +1,7 @@
+# Core data and configuration
+pandas
+PyYAML
+requests
+
+# Testing
+pytest

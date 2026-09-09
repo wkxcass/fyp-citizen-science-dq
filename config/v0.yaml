@@ -1,0 +1,27 @@
+# Preliminary V0 configuration.
+# Keep experiment-specific settings here rather than scattering them through code.
+
+project:
+  name: fyp-citizen-science-dq
+  version: v0
+
+species:
+  common_name: Raffles' Banded Langur
+  scientific_name: Presbytis femoralis
+
+knowledge_source:
+  name: Wikipedia
+  url: https://en.wikipedia.org/wiki/Raffles%27_banded_langur
+
+dataset:
+  preferred_platform: GBIF
+  fallback_platform: iNaturalist
+  input_path: data/raw/occurrences.csv
+
+oracle_generation:
+  model: openai/gpt-oss-20b
+  prompt_path: prompts/oracle_v0.md
+  output_path: experiments/runs/v0/generated_oracle.py
+
+qc:
+  output_path: experiments/runs/v0/flagged_records.csv
