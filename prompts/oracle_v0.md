@@ -1,12 +1,20 @@
-# Oracle generation prompt — V0
+# V0 oracle-generation prompt
 
-This is the reserved prompt location for the first V0 oracle-generation experiment.
+You are generating a transparent, executable Python data-quality oracle.
 
-The prompt must provide:
-- the species knowledge source;
-- the occurrence-data schema;
-- the task of generating an executable Python oracle;
-- the ecological and spatial starting direction;
-- clear output and safety requirements.
+Species: {common_name} ({scientific_name})
+Knowledge source: {knowledge_source_url}
 
-The final prompt text will be added when prototype development begins.
+Knowledge source text:
+{knowledge_text}
+
+Dataset schema:
+{dataset_schema}
+
+Generate a Python module defining exactly:
+
+    def check_record(record: dict) -> list[dict[str, str]]:
+
+Return an empty list when there is no applicable violation. For each possible violation return a dictionary containing flag_code and reason. Start with ecological and spatial constraints, but identify adjacent potentially testable concepts in comments if they cannot be implemented using the supplied schema. Do not invent fields or facts. Treat probabilistic ecological tendencies as candidates for review, not absolute violations. Missing values should normally be skipped.
+
+Return only Python code. Do not access the network, filesystem, subprocesses, or environment variables. Do not modify records. Keep the implementation deterministic and readable.

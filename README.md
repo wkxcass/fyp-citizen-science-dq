@@ -1,43 +1,47 @@
 # FYP: Citizen Science Data Quality
 
-An experimental repository for the Final Year Project **Addressing Data Quality Issues in Citizen Science Data**.
+An experimental repository for the Final Year Project Addressing Data Quality Issues in Citizen Science Data.
 
-Prototype V0 will explore whether an LLM can generate an executable Python oracle from species knowledge and use it to flag suspicious occurrence records.
+Prototype V0 explores whether an LLM can generate an executable Python oracle from species knowledge and use it to flag suspicious occurrence records.
 
 ## V0 scope
 
 - Species: Raffles' Banded Langur (*Presbytis femoralis*)
 - Knowledge source: Wikipedia
-- Occurrence data: GBIF or an iNaturalist-derived dataset; the exact source will be fixed before execution
-- Oracle generation: an LLM produces Python
+- Occurrence platform: iNaturalist
+- Oracle generation: an OpenAI-compatible LLM endpoint produces Python
 - QC output: a CSV containing records flagged by the generated oracle
 
-Intermediate constraint representations, hard/soft constraint modelling, semantic verification, UI, and database design are intentionally deferred until V0 provides evidence that they are useful.
-
-## Repository layout
-
-- `src/oracle_gen/`: knowledge source to executable oracle
-- `src/qc_engine/`: run an oracle against occurrence records
-- `prompts/`: versioned prompt templates
-- `config/`: reproducible experiment settings
-- `data/raw/`: small, redistributable fixtures only
-- `data/processed/`: derived local outputs
-- `experiments/`: experiment records and run outputs
-- `docs/`: architecture and decision records
-- `tests/`: automated tests
+V0 intentionally defers intermediate constraint representations, semantic verification, UI, database design, automatic correction, and automatic deletion.
 
 ## Setup
 
-```bash
-python -m venv .venv
-source .venv/bin/activate        # Windows: .venv\\Scripts\\activate
-pip install -r requirements.txt
-```
+    python -m venv .venv
+    source .venv/bin/activate        # Windows: .venv\\Scripts\\activate
+    pip install -r requirements.txt
 
-## Running V0
+## Quick start without an LLM
 
-The V0 command will be documented here once the first implementation is added. This repository-initialization step contains no prototype implementation yet.
+    python -m src.qc_engine.run
+    pytest
 
-## Reproducibility
+The checked-in fixture should produce one flagged record in experiments/runs/v0/flagged_records.csv.
 
-Record meaningful changes in `docs/decisions.md` and each experiment in `experiments/log.csv`. Generated data, API credentials, and large or licensed downloads must not be committed.
+## Fetch iNaturalist observations
+
+    python -m src.qc_engine.inaturalist --taxon "Presbytis femoralis" --output data/raw/occurrences.csv
+
+The downloader resolves the taxon through iNaturalist and stores a normalized CSV. Live observations are ignored by Git by default.
+
+## Generate an oracle with an LLM
+
+    export LLM_API_KEY="your-key"
+    # Optional: export LLM_BASE_URL="https://your-endpoint/v1"
+    python -m src.oracle_gen.generate --prompt-only
+    python -m src.oracle_gen.generate
+
+Inspect generated code before executing it:
+
+    python -m src.qc_engine.run --input data/raw/occurrences.csv --oracle experiments/runs/v0/generated_oracle.py --output experiments/runs/v0/flagged_records.csv
+
+An oracle flags records for human review; it does not prove that a record is erroneous. Do not commit API credentials, large downloads, or unreviewed generated code.

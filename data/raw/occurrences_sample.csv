@@ -1,0 +1,4 @@
+observation_id,taxon_name,latitude,longitude,observed_on,quality_grade,observer_login,observation_url
+1001,Presbytis femoralis,1.3521,103.8198,2025-01-15,research,example_observer,https://www.inaturalist.org/observations/1001
+1002,Presbytis femoralis,52.5200,13.4050,2025-01-16,needs_id,example_observer,https://www.inaturalist.org/observations/1002
+1003,Presbytis femoralis,,,,casual,example_observer,https://www.inaturalist.org/observations/1003

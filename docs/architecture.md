@@ -1,17 +1,22 @@
-# Preliminary V0 Architecture
+# Prototype V0 Architecture
 
-V0 is intentionally a small end-to-end experimental pipeline:
+V0 is an explicit pipeline:
 
-1. A species knowledge source is supplied to an LLM together with the selected occurrence-data schema.
-2. The LLM generates an executable Python oracle.
-3. The QC engine loads occurrence records for *Presbytis femoralis*.
-4. The engine executes the oracle against applicable records.
-5. The system writes suspicious-record results to CSV.
+1. Fetch the Wikipedia summary for *Presbytis femoralis*.
+2. Combine that text with the normalized iNaturalist CSV schema and oracle contract.
+3. Optionally call an OpenAI-compatible chat-completions endpoint and save the response as Python.
+4. Resolve the species through iNaturalist, fetch observations, and normalize them into CSV.
+5. Load an oracle, call check_record(record) for each row, and write one output row per flag.
 
-The generated oracle is an experimental artefact and must be inspected before its output is treated as evidence. V0 flags records for review; it does not automatically correct or delete data.
+The checked-in reference oracle exercises the QC mechanics without an LLM or live API. It is a test harness, not the research result.
 
-## Current boundaries
+## Oracle contract
 
-V0 starts with ecological and spatial knowledge, while allowing the model to identify adjacent potentially testable concepts. Unsupported concepts are recorded for later analysis rather than implemented in advance.
+    def check_record(record: dict) -> list[dict[str, str]]:
+        ...
 
-The following are deliberately not fixed yet: the final dataset platform (GBIF versus iNaturalist-derived data), intermediate constraint representation, hard/soft constraint treatment, semantic verification, UI, and database design.
+An empty list means no applicable violation. A returned dictionary contains a stable flag_code and human-readable reason. Missing values are normally treated as inapplicable. V0 flags for human review; it does not automatically clean, correct, or delete records.
+
+## Deliberate boundaries
+
+Only a normalized CSV adapter is supported. The initial target is ecological and spatial knowledge. Adjacent concepts may be noted but are not required to be executable. Generated code is not trusted automatically. No intermediate constraint representation or semantic verifier is implemented yet.
