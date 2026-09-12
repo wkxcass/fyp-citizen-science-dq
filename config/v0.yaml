@@ -14,8 +14,7 @@ knowledge_source:
   url: https://en.wikipedia.org/wiki/Raffles%27_banded_langur
 
 dataset:
-  preferred_platform: GBIF
-  fallback_platform: iNaturalist
+  platform: iNaturalist
   input_path: data/raw/occurrences.csv
 
 oracle_generation:
