@@ -9,10 +9,10 @@ from typing import Any
 
 import requests
 
+from src.project_config import load_config, resolve_path
+from src.qc_engine.schema import normalize_observation, schema_column_names
+
 API = "https://api.inaturalist.org/v1"
-FIELDS = ["observation_id", "taxon_name", "latitude", "longitude", "observed_on", "quality_grade", "observer_login", "observation_url"]
-
-
 def find_taxon_id(scientific_name: str, timeout: int = 30) -> int:
     response = requests.get(f"{API}/taxa", params={"q": scientific_name, "per_page": 10}, headers={"User-Agent": "fyp-citizen-science-dq/0.1"}, timeout=timeout)
     response.raise_for_status()
@@ -29,24 +29,24 @@ def fetch_observations(taxon_id: int, per_page: int = 100, timeout: int = 30) ->
     return response.json().get("results", [])
 
 
-def normalize(observation: dict[str, Any]) -> dict[str, Any]:
-    coordinates = observation.get("geojson", {}).get("coordinates", [None, None])
-    obs_id = observation.get("id")
-    return {"observation_id": obs_id, "taxon_name": (observation.get("taxon") or {}).get("name"), "latitude": coordinates[1], "longitude": coordinates[0], "observed_on": observation.get("observed_on"), "quality_grade": observation.get("quality_grade"), "observer_login": (observation.get("user") or {}).get("login"), "observation_url": f"https://www.inaturalist.org/observations/{obs_id}"}
-
-
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--taxon", default="Presbytis femoralis")
-    parser.add_argument("--output", default="data/raw/occurrences.csv")
-    parser.add_argument("--per-page", type=int, default=100)
+    parser.add_argument("--config", default="config/v0.yaml")
+    parser.add_argument("--taxon")
+    parser.add_argument("--output")
+    parser.add_argument("--per-page", type=int)
     args = parser.parse_args()
-    taxon_id = find_taxon_id(args.taxon)
-    rows = [normalize(item) for item in fetch_observations(taxon_id, args.per_page)]
-    output = Path(args.output)
+    config, repo_root = load_config(args.config)
+    if config["dataset"]["platform"].lower() != "inaturalist":
+        raise SystemExit("This adapter requires dataset.platform to be iNaturalist.")
+    taxon = args.taxon or config["species"]["scientific_name"]
+    per_page = args.per_page or config["dataset"]["fetch"]["per_page"]
+    output = Path(args.output) if args.output else resolve_path(repo_root, config["dataset"]["input_path"])
+    taxon_id = find_taxon_id(taxon)
+    rows = [normalize_observation(item, config) for item in fetch_observations(taxon_id, per_page)]
     output.parent.mkdir(parents=True, exist_ok=True)
     with output.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=FIELDS)
+        writer = csv.DictWriter(handle, fieldnames=schema_column_names(config))
         writer.writeheader()
         writer.writerows(rows)
     print(f"Wrote {len(rows)} observations to {output} (taxon id {taxon_id}).")

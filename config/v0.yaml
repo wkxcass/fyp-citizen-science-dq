@@ -1,5 +1,4 @@
-# Preliminary V0 configuration.
-# Keep experiment-specific settings here rather than scattering them through code.
+# Canonical V0 experiment configuration.
 
 project:
   name: fyp-citizen-science-dq
@@ -16,6 +15,45 @@ knowledge_source:
 dataset:
   platform: iNaturalist
   input_path: data/raw/occurrences.csv
+  fetch:
+    per_page: 100
+  schema:
+    id: inaturalist-observation-v1-normalized
+    description: Normalized occurrence fields used by V0 oracles.
+    fields:
+      - name: observation_id
+        type: integer
+        description: iNaturalist observation identifier.
+        source: id
+      - name: taxon_name
+        type: string
+        description: Scientific name attached to the observation.
+        source: taxon.name
+      - name: latitude
+        type: number
+        description: Decimal latitude in WGS84.
+        source: geojson.coordinates[1]
+      - name: longitude
+        type: number
+        description: Decimal longitude in WGS84.
+        source: geojson.coordinates[0]
+      - name: observed_on
+        type: date
+        description: Observation date supplied by the observer.
+        source: observed_on
+      - name: quality_grade
+        type: string
+        description: iNaturalist observation quality grade.
+        source: quality_grade
+      - name: observer_login
+        type: string
+        description: iNaturalist observer login.
+        source: user.login
+      - name: observation_url
+        type: string
+        description: Public iNaturalist observation URL.
+        source: id
+        transform: observation_url
 
 oracle_generation:
   model: openai/gpt-oss-20b
@@ -23,4 +61,5 @@ oracle_generation:
   output_path: experiments/runs/v0/generated_oracle.py
 
 qc:
+  oracle_path: src/oracle_gen/example_oracle.py
   output_path: experiments/runs/v0/flagged_records.csv

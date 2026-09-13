@@ -11,6 +11,8 @@ from typing import Any
 import requests
 import yaml
 
+from src.project_config import load_config, resolve_path
+from src.qc_engine.schema import schema_description
 from .prompting import build_prompt, fetch_wikipedia_text
 
 
@@ -41,16 +43,17 @@ def main() -> None:
     parser.add_argument("--prompt-only", action="store_true")
     parser.add_argument("--output")
     args = parser.parse_args()
-    config: dict[str, Any] = yaml.safe_load(Path(args.config).read_text(encoding="utf-8"))
+    config, repo_root = load_config(args.config)
     species, source = config["species"], config["knowledge_source"]
     oracle_config = config["oracle_generation"]
     knowledge = fetch_wikipedia_text(source["url"])
-    schema = "iNaturalist CSV columns: observation_id, taxon_name, latitude, longitude, observed_on, quality_grade, observer_login, observation_url"
-    prompt = build_prompt(oracle_config["prompt_path"], {
+    schema = schema_description(config)
+    prompt_template_path = resolve_path(repo_root, oracle_config["prompt_path"])
+    prompt = build_prompt(prompt_template_path, {
         "common_name": species["common_name"], "scientific_name": species["scientific_name"],
         "knowledge_source_url": source["url"], "knowledge_text": knowledge, "dataset_schema": schema,
     })
-    output_path = Path(args.output or oracle_config["output_path"])
+    output_path = Path(args.output) if args.output else resolve_path(repo_root, oracle_config["output_path"])
     output_path.parent.mkdir(parents=True, exist_ok=True)
     if args.prompt_only:
         prompt_path = output_path.with_suffix(".prompt.txt")

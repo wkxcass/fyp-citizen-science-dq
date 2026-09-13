@@ -22,7 +22,7 @@ V0 intentionally defers intermediate constraint representations, semantic verifi
 
 ## Quick start without an LLM
 
-    python -m src.qc_engine.run
+    python -m src.qc_engine.run --input data/raw/occurrences_sample.csv
     pytest
 
 The checked-in fixture should produce one flagged record in experiments/runs/v0/flagged_records.csv.
