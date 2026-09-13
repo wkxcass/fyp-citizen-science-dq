@@ -58,11 +58,11 @@ dataset:
 
 oracle_generation:
   model: openai/gpt-oss-20b
-  base_url: https://api.openai.com/v1
+  base_url: https://api.groq.com/openai/v1
   api_key_env: LLM_API_KEY
   prompt_path: prompts/oracle_v0.md
   output_path: experiments/runs/v0/generated_oracle.py
 
 qc:
-  oracle_path: src/oracle_gen/example_oracle.py
+  oracle_path: experiments/runs/v0/generated_oracle.py
   output_path: experiments/runs/v0/flagged_records.csv

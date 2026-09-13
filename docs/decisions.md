@@ -24,6 +24,12 @@
 - Decision: Include a transparent reference oracle and small fixture so QC mechanics can be tested without an LLM or live API.
 - Rationale: Separates infrastructure failures from model-generation failures.
 
+## D005 — Load secrets from a local dotenv file
+
+- Status: Tentative
+- Decision: Store the local LLM credential in `.env`, documented by tracked `.env.example`, and load it through the shared configuration helper.
+- Rationale: Avoid repeated shell exports without placing credentials in Git.
+
 ## Open variables for later experiments
 
 Prompt wording and source-text amount; model and decoding settings; direct Python versus intermediate representation; supported fields and constraint families; missing-value and probabilistic-statement treatment; oracle review; platform adapters; and evaluation criteria.
