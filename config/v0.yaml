@@ -58,6 +58,7 @@ dataset:
 
 oracle_generation:
   model: openai/gpt-oss-20b
+  max_output_tokens: 4096
   base_url: https://api.groq.com/openai/v1
   api_key_env: LLM_API_KEY
   prompt_path: prompts/oracle_v0.md
