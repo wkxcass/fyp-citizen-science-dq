@@ -9,8 +9,6 @@ from pathlib import Path
 from typing import Any
 
 import requests
-import yaml
-
 from src.project_config import load_config, resolve_path
 from src.qc_engine.schema import schema_description
 from .prompting import build_prompt, fetch_wikipedia_text
@@ -60,10 +58,11 @@ def main() -> None:
         prompt_path.write_text(prompt, encoding="utf-8")
         print(f"Wrote prompt to {prompt_path}")
         return
-    api_key = os.getenv("LLM_API_KEY")
+    api_key = os.getenv(oracle_config.get("api_key_env", "LLM_API_KEY"))
     if not api_key:
         raise SystemExit("LLM_API_KEY is required unless --prompt-only is used.")
-    generated = call_llm(prompt, oracle_config["model"], os.getenv("LLM_BASE_URL", "https://api.openai.com/v1"), api_key)
+    base_url = os.getenv("LLM_BASE_URL", oracle_config["base_url"])
+    generated = call_llm(prompt, oracle_config["model"], base_url, api_key)
     output_path.write_text(extract_python(generated), encoding="utf-8")
     print(f"Wrote generated oracle to {output_path}")
 

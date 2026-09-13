@@ -14,6 +14,7 @@ knowledge_source:
 
 dataset:
   platform: iNaturalist
+  api_base_url: https://api.inaturalist.org/v1
   input_path: data/raw/occurrences.csv
   fetch:
     per_page: 100
@@ -57,6 +58,8 @@ dataset:
 
 oracle_generation:
   model: openai/gpt-oss-20b
+  base_url: https://api.openai.com/v1
+  api_key_env: LLM_API_KEY
   prompt_path: prompts/oracle_v0.md
   output_path: experiments/runs/v0/generated_oracle.py
 
