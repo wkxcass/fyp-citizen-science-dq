@@ -25,8 +25,10 @@ def load_oracle(path: str | Path):
 def run(input_path: str | Path, oracle_path: str | Path, output_path: str | Path, include_passes: bool = False) -> int:
     check_record = load_oracle(oracle_path)
     with Path(input_path).open(newline="", encoding="utf-8") as handle:
-        records = list(csv.DictReader(handle))
-    fields = ["observation_id", "taxon_name", "latitude", "longitude", "observed_on", "quality_grade", "observer_login", "observation_url", "flag_code", "reason"]
+        reader = csv.DictReader(handle)
+        records = list(reader)
+        input_fields = reader.fieldnames or []
+    fields = [*input_fields, "flag_code", "reason"]
     flagged = 0
     output = Path(output_path)
     output.parent.mkdir(parents=True, exist_ok=True)

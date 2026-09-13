@@ -26,7 +26,10 @@ def get_source_value(value: Any, source: str) -> Any:
         if isinstance(current, dict):
             current = current.get(key)
         elif isinstance(current, (list, tuple)):
-            current = current[int(key)]
+            try:
+                current = current[int(key)]
+            except (IndexError, TypeError):
+                return None
         else:
             return None
     return current
