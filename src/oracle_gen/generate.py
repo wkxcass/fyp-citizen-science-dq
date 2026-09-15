@@ -124,14 +124,14 @@ def main() -> None:
     parser.add_argument("--output")
     args = parser.parse_args()
     config, repo_root = load_config(args.config)
-    species, source = config["species"], config["knowledge_source"]
+    species, knowledge_source = config["species"], config["knowledge_source"]
     oracle_config = config["oracle_generation"]
-    knowledge = fetch_wikipedia_text(source["url"])
+    knowledge = fetch_wikipedia_text(knowledge_source["url"])
     schema = schema_description(config)
     prompt_template_path = resolve_path(repo_root, oracle_config["prompt_path"])
     prompt = build_prompt(prompt_template_path, {
         "common_name": species["common_name"], "scientific_name": species["scientific_name"],
-        "knowledge_source_url": source["url"], "knowledge_text": knowledge, "dataset_schema": schema,
+        "knowledge_source_url": knowledge_source["url"], "knowledge_text": knowledge, "dataset_schema": schema,
     })
     output_path = Path(args.output) if args.output else resolve_path(repo_root, oracle_config["output_path"])
     output_path.parent.mkdir(parents=True, exist_ok=True)

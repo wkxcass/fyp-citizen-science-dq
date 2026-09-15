@@ -9,15 +9,14 @@ from typing import Any
 
 import requests
 
-from src.project_config import load_config, resolve_path
+from src.project_config import load_config, resolve_path, USER_AGENT
 from src.qc_engine.schema import normalize_observation, schema_column_names
 
-API = "https://api.inaturalist.org/v1"
 MAX_PAGE_SIZE = 200  # iNaturalist API ceiling for per_page on /observations
-
+API = "https://api.inaturalist.org/v1"
 
 def find_taxon_id(scientific_name: str, api_base_url: str = API, timeout: int = 30) -> int:
-    response = requests.get(f"{api_base_url.rstrip('/')}/taxa", params={"q": scientific_name, "per_page": 10}, headers={"User-Agent": "fyp-citizen-science-dq/0.1"}, timeout=timeout)
+    response = requests.get(f"{api_base_url.rstrip('/')}/taxa", params={"q": scientific_name, "per_page": 10}, headers={"User-Agent": USER_AGENT}, timeout=timeout)
     response.raise_for_status()
     taxa = response.json().get("results", [])
     taxon = next((item for item in taxa if item.get("name") == scientific_name), None) or (taxa[0] if taxa else None)
@@ -36,7 +35,7 @@ def fetch_observations(taxon_id: int, total_records: int, api_base_url: str = AP
         response = requests.get(
             f"{api_base_url.rstrip('/')}/observations",
             params={"taxon_id": taxon_id, "per_page": per_page, "page": page, "order_by": "created_at", "order": "desc"},
-            headers={"User-Agent": "fyp-citizen-science-dq/0.1"},
+            headers={"User-Agent": USER_AGENT},
             timeout=timeout,
         )
         response.raise_for_status()
@@ -63,9 +62,8 @@ def main() -> None:
     taxon = args.taxon or config["species"]["scientific_name"]
     total_records = args.total_records or config["dataset"]["fetch"]["total_records"]
     output = Path(args.output) if args.output else resolve_path(repo_root, config["dataset"]["input_path"])
-    api_base_url = config["dataset"]["api_base_url"]
-    taxon_id = find_taxon_id(taxon, api_base_url=api_base_url)
-    rows = [normalize_observation(item, config) for item in fetch_observations(taxon_id, total_records, api_base_url=api_base_url)]
+    taxon_id = find_taxon_id(taxon)
+    rows = [normalize_observation(item, config) for item in fetch_observations(taxon_id, total_records)]
     output.parent.mkdir(parents=True, exist_ok=True)
     with output.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=schema_column_names(config))

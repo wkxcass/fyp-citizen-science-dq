@@ -1,5 +1,4 @@
 # Core data and configuration
-pandas
 PyYAML
 requests
 python-dotenv

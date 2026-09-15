@@ -9,6 +9,9 @@ import yaml
 from dotenv import load_dotenv
 
 
+USER_AGENT = "fyp-citizen-science-dq/0.1"
+
+
 def load_config(path: str | Path) -> tuple[dict[str, Any], Path]:
     """Load YAML and return it with the repository root used for paths."""
     config_path = Path(path).resolve()
