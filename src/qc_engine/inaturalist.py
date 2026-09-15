@@ -13,6 +13,9 @@ from src.project_config import load_config, resolve_path
 from src.qc_engine.schema import normalize_observation, schema_column_names
 
 API = "https://api.inaturalist.org/v1"
+MAX_PAGE_SIZE = 200  # iNaturalist API ceiling for per_page on /observations
+
+
 def find_taxon_id(scientific_name: str, api_base_url: str = API, timeout: int = 30) -> int:
     response = requests.get(f"{api_base_url.rstrip('/')}/taxa", params={"q": scientific_name, "per_page": 10}, headers={"User-Agent": "fyp-citizen-science-dq/0.1"}, timeout=timeout)
     response.raise_for_status()
@@ -23,10 +26,28 @@ def find_taxon_id(scientific_name: str, api_base_url: str = API, timeout: int = 
     return int(taxon["id"])
 
 
-def fetch_observations(taxon_id: int, per_page: int = 100, api_base_url: str = API, timeout: int = 30) -> list[dict[str, Any]]:
-    response = requests.get(f"{api_base_url.rstrip('/')}/observations", params={"taxon_id": taxon_id, "per_page": per_page, "page": 1, "order_by": "created_at", "order": "desc"}, headers={"User-Agent": "fyp-citizen-science-dq/0.1"}, timeout=timeout)
-    response.raise_for_status()
-    return response.json().get("results", [])
+def fetch_observations(taxon_id: int, total_records: int, api_base_url: str = API, timeout: int = 30) -> list[dict[str, Any]]:
+    """Page through the iNaturalist API until total_records is reached or results run out."""
+    observations: list[dict[str, Any]] = []
+    page = 1
+    while len(observations) < total_records:
+        remaining = total_records - len(observations)
+        per_page = min(MAX_PAGE_SIZE, remaining)
+        response = requests.get(
+            f"{api_base_url.rstrip('/')}/observations",
+            params={"taxon_id": taxon_id, "per_page": per_page, "page": page, "order_by": "created_at", "order": "desc"},
+            headers={"User-Agent": "fyp-citizen-science-dq/0.1"},
+            timeout=timeout,
+        )
+        response.raise_for_status()
+        results = response.json().get("results", [])
+        if not results:
+            break  # no more pages available
+        observations.extend(results)
+        if len(results) < per_page:
+            break  # that was the last page
+        page += 1
+    return observations[:total_records]
 
 
 def main() -> None:
@@ -34,17 +55,17 @@ def main() -> None:
     parser.add_argument("--config", default="config/v0.yaml")
     parser.add_argument("--taxon")
     parser.add_argument("--output")
-    parser.add_argument("--per-page", type=int)
+    parser.add_argument("--total-records", type=int)
     args = parser.parse_args()
     config, repo_root = load_config(args.config)
     if config["dataset"]["platform"].lower() != "inaturalist":
         raise SystemExit("This adapter requires dataset.platform to be iNaturalist.")
     taxon = args.taxon or config["species"]["scientific_name"]
-    per_page = args.per_page or config["dataset"]["fetch"]["per_page"]
+    total_records = args.total_records or config["dataset"]["fetch"]["total_records"]
     output = Path(args.output) if args.output else resolve_path(repo_root, config["dataset"]["input_path"])
     api_base_url = config["dataset"]["api_base_url"]
     taxon_id = find_taxon_id(taxon, api_base_url=api_base_url)
-    rows = [normalize_observation(item, config) for item in fetch_observations(taxon_id, per_page, api_base_url=api_base_url)]
+    rows = [normalize_observation(item, config) for item in fetch_observations(taxon_id, total_records, api_base_url=api_base_url)]
     output.parent.mkdir(parents=True, exist_ok=True)
     with output.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=schema_column_names(config))
