@@ -6,7 +6,7 @@ V0 is an explicit pipeline:
 2. Combine that text with the normalized iNaturalist CSV schema and oracle contract.
 3. Optionally call an OpenAI-compatible chat-completions endpoint and save the response as Python.
 4. Resolve the species through iNaturalist, fetch observations, and normalize them into CSV.
-5. Load an oracle, call check_record(record) for each row, and write one output row per flag.
+5. Load an oracle, call `check_record(record)` for each row, and write one output row per flag.
 
 The checked-in reference oracle exercises the QC mechanics without an LLM or live API. It is a test harness, not the research result.
 
