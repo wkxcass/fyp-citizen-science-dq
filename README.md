@@ -174,7 +174,7 @@ The QC runner dynamically loads the configured oracle, applies `check_record(rec
 
 - Keep prompts versioned under `prompts/`; do not bury prompt text in Python code.
 - Keep small, intentional fixtures under `data/raw/`; live downloads and generated outputs are ignored by Git.
-- Review generated Python before running it. V0 generates executable code, so the generated artifact is an experimental input rather than trusted production code.
+- Review generated Python before running it. v0 generates executable code, so the generated artifact is an experimental input rather than trusted production code.
 - Do not commit `.env`, API credentials, large downloads, or unreviewed generated artifacts.
 
 See `docs/architecture.md` for the component relationships and `docs/decisions.md` for recorded design decisions.
