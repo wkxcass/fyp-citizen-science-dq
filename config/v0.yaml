@@ -15,7 +15,7 @@ knowledge_source:
 dataset:
   platform: iNaturalist
   api_base_url: https://api.inaturalist.org/v1
-  input_path: data/raw/occurrences.csv
+  input_path: data/raw/occurrences_v0.csv
   fetch:
     total_records: 250
   schema:
