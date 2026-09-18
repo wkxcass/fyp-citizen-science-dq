@@ -1,4 +1,4 @@
-# V0 oracle-generation prompt
+# v0 oracle-generation prompt
 
 You are generating a transparent, executable Python data-quality oracle.
 

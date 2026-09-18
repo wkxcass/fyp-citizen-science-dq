@@ -1,4 +1,4 @@
-# Canonical V0 experiment configuration.
+# Canonical v0 experiment configuration.
 
 project:
   name: fyp-citizen-science-dq
@@ -15,12 +15,12 @@ knowledge_source:
 dataset:
   platform: iNaturalist
   api_base_url: https://api.inaturalist.org/v1
-  input_path: data/raw/occurrences_v0.csv
+  input_path: data/raw/occurrences.csv
   fetch:
     total_records: 250
   schema:
     id: inaturalist-observation-v1-normalized
-    description: Normalized occurrence fields used by V0 oracles.
+    description: Normalized occurrence fields used by v0 oracles.
     fields:
       - name: observation_id
         type: integer
