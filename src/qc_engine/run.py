@@ -57,7 +57,7 @@ def run(
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--config", default="config/v0.yaml")
+    parser.add_argument("--config")
     parser.add_argument("--input")
     parser.add_argument("--oracle")
     parser.add_argument("--output")

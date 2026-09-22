@@ -6,11 +6,12 @@ from src.qc_engine.schema import normalize_observation, normalize_record
 
 
 ROOT = Path(__file__).parents[1]
+CONFIG = "config/v0.1.yaml"  # Update version number.
 
 
 def test_reference_oracle_flags_only_out_of_range_coordinates(tmp_path):
     output = tmp_path / "flags.csv"
-    config, _ = load_config(ROOT / "config/v0.yaml")
+    config, _ = load_config(ROOT / CONFIG)
     flagged = run(
         ROOT / "data/raw/occurrences_sample.csv",
         ROOT / "src/oracle_gen/example_oracle.py",
@@ -25,7 +26,7 @@ def test_reference_oracle_flags_only_out_of_range_coordinates(tmp_path):
 
 def test_reference_oracle_can_include_passes(tmp_path):
     output = tmp_path / "flags.csv"
-    config, _ = load_config(ROOT / "config/v0.yaml")
+    config, _ = load_config(ROOT / CONFIG)
     run(
         ROOT / "data/raw/occurrences_sample.csv",
         ROOT / "src/oracle_gen/example_oracle.py",
@@ -37,7 +38,7 @@ def test_reference_oracle_can_include_passes(tmp_path):
 
 
 def test_inaturalist_response_is_mapped_by_configured_schema():
-    config, _ = load_config(ROOT / "config/v0.yaml")
+    config, _ = load_config(ROOT / CONFIG)
     observation = {
         "id": 123,
         "taxon": {"name": "Presbytis femoralis"},
@@ -53,7 +54,7 @@ def test_inaturalist_response_is_mapped_by_configured_schema():
 
 
 def test_normalize_record_coerces_declared_numeric_types():
-    config, _ = load_config(ROOT / "config/v0.yaml")
+    config, _ = load_config(ROOT / CONFIG)
     raw = {"observation_id": "1001", "latitude": "1.3521", "longitude": "103.8198", "taxon_name": "x"}
     normalized = normalize_record(raw, config)
     assert normalized["observation_id"] == 1001
@@ -62,7 +63,7 @@ def test_normalize_record_coerces_declared_numeric_types():
 
 
 def test_normalize_record_treats_empty_string_as_missing():
-    config, _ = load_config(ROOT / "config/v0.yaml")
+    config, _ = load_config(ROOT / CONFIG)
     raw = {"latitude": "", "longitude": "", "observed_on": ""}
     normalized = normalize_record(raw, config)
     assert normalized["latitude"] is None
@@ -71,7 +72,7 @@ def test_normalize_record_treats_empty_string_as_missing():
 
 
 def test_normalize_record_leaves_unparseable_values_as_is():
-    config, _ = load_config(ROOT / "config/v0.yaml")
+    config, _ = load_config(ROOT / CONFIG)
     raw = {"latitude": "not-a-number", "longitude": "103.8"}
     normalized = normalize_record(raw, config)
     assert normalized["latitude"] == "not-a-number"  # malformed, not missing — left untouched

@@ -1,4 +1,4 @@
-"""Transparent reference oracle for smoke-testing the V0 QC runner."""
+"""Transparent reference oracle for smoke-testing the QC runner."""
 
 from typing import Any
 

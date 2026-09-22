@@ -1,4 +1,4 @@
-"""Schema representation and source-field extraction for V0."""
+"""Schema representation and source-field extraction."""
 
 from __future__ import annotations
 

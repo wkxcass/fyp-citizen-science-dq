@@ -119,7 +119,7 @@ def call_llm(
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--config", default="config/v0.yaml")
+    parser.add_argument("--config")
     parser.add_argument("--prompt-only", action="store_true")
     parser.add_argument("--output")
     args = parser.parse_args()
@@ -155,7 +155,7 @@ def main() -> None:
     if finish_reason in {"length", "max_tokens"}:
         raise SystemExit(
             "Oracle generation stopped at the output-token limit. "
-            "Increase oracle_generation.max_output_tokens in config/v0.yaml and retry."
+            "Increase oracle_generation.max_output_tokens in config file and retry."
         )
     try:
         source = extract_python(generated)
