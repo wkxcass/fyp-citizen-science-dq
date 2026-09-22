@@ -46,5 +46,41 @@ def normalize_observation(observation: dict[str, Any], config: dict[str, Any]) -
     return normalized
 
 
+def coerce_value(raw: Any, field_type: str) -> Any:
+    """Coerce a raw CSV string to the type declared for a schema field.
+
+    Missing values (None or empty string) become None. Values that fail to
+    parse as their declared type are returned unchanged — a malformed value
+    is a distinct condition from a missing one, and collapsing the two would
+    let corrupt input silently masquerade as an ordinarily-absent field.
+    """
+    if raw is None or raw == "":
+        return None
+    if field_type == "integer":
+        try:
+            return int(raw)
+        except (TypeError, ValueError):
+            return raw
+    if field_type == "number":
+        try:
+            return float(raw)
+        except (TypeError, ValueError):
+            return raw
+    return raw
+
+
+def normalize_record(record: dict[str, Any], config: dict[str, Any]) -> dict[str, Any]:
+    """Coerce a raw CSV row to the types declared in the configured schema.
+
+    csv.DictReader always returns strings; this makes the runtime types seen
+    by check_record match what schema_description() tells the LLM to expect.
+    """
+    field_types = {field["name"]: field["type"] for field in schema_fields(config)}
+    return {
+        key: coerce_value(value, field_types[key]) if key in field_types else value
+        for key, value in record.items()
+    }
+
+
 def schema_column_names(config: dict[str, Any]) -> list[str]:
     return [field["name"] for field in schema_fields(config)]
