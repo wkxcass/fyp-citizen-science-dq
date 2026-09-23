@@ -51,7 +51,7 @@ def fetch_observations(taxon_id: int, total_records: int, api_base_url: str = AP
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--config", default="config/v0.yaml")
+    parser.add_argument("--config")
     parser.add_argument("--taxon")
     parser.add_argument("--output")
     parser.add_argument("--total-records", type=int)

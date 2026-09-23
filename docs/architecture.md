@@ -1,12 +1,12 @@
-# Prototype V0 Architecture
+# Prototype v0.1 Architecture
 
-V0 is an explicit pipeline:
+The pipeline:
 
 1. Fetch the Wikipedia summary for *Presbytis femoralis*.
 2. Combine that text with the normalized iNaturalist CSV schema and oracle contract.
 3. Optionally call an OpenAI-compatible chat-completions endpoint and save the response as Python.
 4. Resolve the species through iNaturalist, fetch observations, and normalize them into CSV.
-5. Load an oracle, call `check_record(record)` for each row, and write one output row per flag.
+5. Normalize each CSV row to the schema's declared field types (empty string → `None`; unparseable-but-present values left unchanged), then load an oracle, call `check_record(record)` for each row, and write one output row per flag.
 
 The checked-in reference oracle exercises the QC mechanics without an LLM or live API. It is a test harness, not the research result.
 

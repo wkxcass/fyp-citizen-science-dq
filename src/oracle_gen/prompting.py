@@ -1,4 +1,4 @@
-"""Prompt assembly and knowledge-source retrieval for V0."""
+"""Prompt assembly and knowledge-source retrieval."""
 
 from pathlib import Path
 from typing import Any

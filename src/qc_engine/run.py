@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from src.project_config import load_config, resolve_path
+from src.qc_engine.schema import normalize_record
 
 
 def load_oracle(path: str | Path):
@@ -22,12 +23,20 @@ def load_oracle(path: str | Path):
     return module.check_record
 
 
-def run(input_path: str | Path, oracle_path: str | Path, output_path: str | Path, include_passes: bool = False) -> int:
+def run(
+    input_path: str | Path,
+    oracle_path: str | Path,
+    output_path: str | Path,
+    *,
+    schema_config: dict[str, Any],
+    include_passes: bool = False,
+) -> int:
     check_record = load_oracle(oracle_path)
     with Path(input_path).open(newline="", encoding="utf-8") as handle:
         reader = csv.DictReader(handle)
         records = list(reader)
         input_fields = reader.fieldnames or []
+    records = [normalize_record(record, schema_config) for record in records]
     fields = [*input_fields, "flag_code", "reason"]
     flagged = 0
     output = Path(output_path)
@@ -48,7 +57,7 @@ def run(input_path: str | Path, oracle_path: str | Path, output_path: str | Path
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--config", default="config/v0.yaml")
+    parser.add_argument("--config")
     parser.add_argument("--input")
     parser.add_argument("--oracle")
     parser.add_argument("--output")
@@ -58,7 +67,7 @@ def main() -> None:
     input_path = Path(args.input) if args.input else resolve_path(repo_root, config["dataset"]["input_path"])
     oracle_path = Path(args.oracle) if args.oracle else resolve_path(repo_root, config["qc"]["oracle_path"])
     output_path = Path(args.output) if args.output else resolve_path(repo_root, config["qc"]["output_path"])
-    print(f"Flagged {run(input_path, oracle_path, output_path, args.include_passes)} record(s). Output: {output_path}")
+    print(f"Flagged {run(input_path, oracle_path, output_path, schema_config=config, include_passes=args.include_passes)} record(s). Output: {output_path}")
 
 
 if __name__ == "__main__":
