@@ -10,10 +10,10 @@
   - Decision: Defer intermediate constraints, hard-versus-soft modelling, semantic verification, UI, database design, and automatic correction.
   - Rationale: Use v0 observations to determine which extensions are justified.
 
-- **D003 — Normalize the platform boundary**
-  - Status: Resolved
-  - Decision: Convert iNaturalist observations into a small stable CSV schema before oracle execution.
-  - Rationale: Keeps the oracle/QC runner focused and makes later data-source comparisons possible.
+- **D003 — Normalization of platform boundary**
+  - Status: Provisional ⚠️
+  - Decision: Continue using the existing mapping from iNaturalist observations to the configured CSV fields. Defer redesign or generalisation of this interface until a concrete experimental requirement justifies it.
+  - Rationale: The existing mapping provides a small, predictable interface for oracle generation, execution and inspection. Normalization is an implementation convenience rather than a requirement of the research approach. Its suitability for additional platforms or richer checks has not been established.
 
 - **D004 — Use a reference oracle for smoke tests**
   - Status: Resolved (v0) ✅
@@ -35,10 +35,10 @@
   - Decision: TBD — keep, shorten, or relocate (e.g. structured metadata instead of inline code comments) the prompt instruction asking the LLM to comment on constraints it couldn't implement.
   - Rationale: Valuable design signal but consumes generation-token budget and may contribute to output (code) truncation.
 
-- **D008 — Classification scheme for constraint/statement types**
-  - Status: Tentative ⛔
-  - Decision: Derive categories empirically from sampled knowledge-source text and citizen-science data platforms.
-  - Rationale: A small sample of species descriptions was reviewed to establish which statement types are actually operationalizable against the current schema (informing what "testable" means in practice) and to surface a first-pass classification scheme grounded in real examples rather than an assumed taxonomy. Formal multi-rater agreement (e.g. Cohen's Kappa) is not pursued given this is solo FYP work; a single analysis pass, revisited as needed, is treated as sufficient.
+- **D008 — Empirical constraint classification to guide generation**
+  - Status: Provisional ⚠️
+  - Decision: Classify sampled species statements by their meaning and checkability independently of the current dataset schema, then assess whether the required evidence is available directly, requires external data, or is unavailable. Use this analysis to guide v1 generation toward source-supported spatial/geographical checks on iNaturalist records and to address schema-first contamination. A field's presence alone must not justify a species-derived rule; generated conditions should preserve the source's scope, qualifiers and uncertainty.
+  - Rationale: The empirical source/platform review identified geographic information as the clearest immediate overlap between species knowledge and accessible occurrence evidence. Classification therefore informs prototype scope, prompting and evaluation. Whether this guidance reduces contamination remains to be evaluated. The scheme is based on a single-analyst review appropriate to the solo FYP and may be revised as further examples arise.
 
 - **D009 — Schema/runtime type-contract mismatch**
   - Status: Resolved (v0.1) ✅
