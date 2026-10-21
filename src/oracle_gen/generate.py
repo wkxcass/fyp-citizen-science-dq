@@ -122,11 +122,21 @@ def main() -> None:
     parser.add_argument("--config")
     parser.add_argument("--prompt-only", action="store_true")
     parser.add_argument("--output")
+    parser.add_argument("--knowledge-file", help="Reuse frozen UTF-8 source text instead of fetching Wikipedia.")
     args = parser.parse_args()
     config, repo_root = load_config(args.config)
     species, knowledge_source = config["species"], config["knowledge_source"]
     oracle_config = config["oracle_generation"]
-    knowledge = fetch_wikipedia_text(knowledge_source["url"])
+    try:
+        knowledge = (
+            Path(args.knowledge_file).read_text(encoding="utf-8")
+            if args.knowledge_file
+            else fetch_wikipedia_text(knowledge_source["url"])
+        )
+        if not knowledge.strip():
+            raise ValueError("The knowledge source text is empty.")
+    except (ValueError, OSError, requests.RequestException) as exc:
+        raise SystemExit(f"Knowledge-source retrieval failed: {exc}") from exc
     schema = schema_description(config)
     prompt_template_path = resolve_path(repo_root, oracle_config["prompt_path"])
     prompt = build_prompt(prompt_template_path, {
@@ -135,10 +145,13 @@ def main() -> None:
     })
     output_path = Path(args.output) if args.output else resolve_path(repo_root, oracle_config["output_path"])
     output_path.parent.mkdir(parents=True, exist_ok=True)
+    knowledge_path = output_path.with_suffix(".knowledge.txt")
+    prompt_path = output_path.with_suffix(".prompt.txt")
+    atomic_write_text(knowledge_path, knowledge)
+    atomic_write_text(prompt_path, prompt)
+    print(f"Wrote knowledge text to {knowledge_path}")
+    print(f"Wrote prompt to {prompt_path}")
     if args.prompt_only:
-        prompt_path = output_path.with_suffix(".prompt.txt")
-        prompt_path.write_text(prompt, encoding="utf-8")
-        print(f"Wrote prompt to {prompt_path}")
         return
     api_key = os.getenv(oracle_config.get("api_key_env", "LLM_API_KEY"))
     if not api_key:

@@ -147,6 +147,8 @@ For example, `dataset.input_path: data/raw/v1/langur/occurrences.csv` produces a
 
 ### 2. Generate an oracle using the configured LLM
 
+Wikipedia retrieval uses the MediaWiki API to request article plain text, including later sections such as **Distribution and habitat**, rather than only the introductory REST summary. It preserves section headings and applies no character or sentence limit. This is article prose, not a complete representation of infoboxes, range maps or other non-prose content. Missing pages, API errors and empty extracts stop generation instead of silently supplying empty knowledge. Existing YAML configs need no changes.
+
 Before making the API call, you can inspect the assembled prompt:
 
 Linux / Ubuntu:
@@ -177,6 +179,22 @@ python -m src.oracle_gen.generate --config config/v0.1.yaml
 
 The generated file is written to `experiments/runs/v0.1/generated_oracle.py`. Inspect it before execution: it should define `check_record(record)` and should not contain Markdown code-fence markers.
 
+Both prompt-only and LLM-generation commands save the exact input text as `<output-stem>.knowledge.txt` and the assembled prompt as `<output-stem>.prompt.txt`, beside the configured or overridden oracle output. Prompt-only does not call the LLM or write an oracle. These input files are saved before any LLM call, including attempts whose generation later fails.
+
+For the v1 pilot, freeze each species' source once, then use `--knowledge-file` to reuse that text across attempts. For example, in PowerShell (the same single-line commands work on Linux):
+
+```powershell
+python -m src.oracle_gen.generate --config config/v1_pangolin.yaml --prompt-only
+```
+
+Inspect `experiments/runs/v1/generated_oracle_pangolin.knowledge.txt` and the matching `.prompt.txt`. The knowledge file should include the later article sections, not just the opening paragraph. Once reviewed, preserve this file and supply it explicitly when generating:
+
+```powershell
+python -m src.oracle_gen.generate --config config/v1_pangolin.yaml --knowledge-file experiments/runs/v1/generated_oracle_pangolin.knowledge.txt --output experiments/runs/v1/pangolin/run_01.py
+```
+
+Use a distinct output such as `run_02.py` or `run_03.py` for each attempt while reusing the **same** knowledge file. `--knowledge-file` is a path relative to the current working directory (or an absolute path), and bypasses Wikipedia retrieval. Without it, each invocation fetches the current article again. Keep the frozen source and run artifacts backed up together; repeated commands at the same output path replace the input snapshots. Repeat the freeze-and-review step for the other three species so the pilot consistently uses article text. Earlier summary-based runs remain a different input condition and should be described accordingly.
+
 ### 3. Run QC on the fetched data
 
 Linux / Ubuntu:
@@ -192,6 +210,12 @@ python -m src.qc_engine.run --config config/v0.1.yaml
 ```
 
 The QC runner dynamically loads the configured oracle, applies `check_record(record)` to each normalized occurrence, and writes flagged records to `experiments/runs/v0.1/flagged_records.csv`.
+
+If generation used `--output` for a separate attempt, pass that oracle path to QC explicitly, along with a separate flags path:
+
+```powershell
+python -m src.qc_engine.run --config config/v1_pangolin.yaml --oracle experiments/runs/v1/pangolin/run_01.py --output experiments/runs/v1/pangolin/run_01.flags.csv
+```
 
 ## ❗ Configuration & Development Notes
 
