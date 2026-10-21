@@ -108,7 +108,7 @@ This path fetches live iNaturalist observations, asks the configured LLM to gene
 
 ### 1. Fetch iNaturalist data
 
-The downloader resolves the configured taxon and writes normalized observations to the configured input path, `data/raw/occurrences.csv`.
+The downloader resolves the configured taxon and writes normalized observations to the configured input path, `data/raw/occurrences.csv`. It also saves the complete public JSON responses and retrieval metadata alongside that CSV. No additional configuration entries are needed.
 
 Linux / Ubuntu:
 
@@ -121,6 +121,29 @@ Windows PowerShell:
 ```powershell
 python -m src.qc_engine.inaturalist --config config/v0.1.yaml
 ```
+
+For an input path ending in `occurrences.csv`, each fetch writes:
+
+| File | Purpose |
+|---|---|
+| `occurrences.csv` | The existing normalized input for the QC runner; its columns are unchanged. |
+| `occurrences.raw.json` | A `responses` list containing the taxon lookup and every fetched observation page. Each entry stores the request URL, parameters, UTC retrieval time and complete decoded JSON response. |
+| `occurrences.metadata.json` | Start/end retrieval times in UTC, requested species, resolved taxon ID/name, requested/actual counts, exact request settings, selected observation IDs, schema mapping and companion filenames. |
+
+The JSON files use the same directory and filename stem as the CSV, including when `--output` overrides its location. The fetcher uses `dataset.api_base_url` and preserves the current ordering (`created_at`, descending). It stops at the requested count or when observations run out. Page size stays fixed across requests so page offsets remain consistent; the raw final page can contain more observations than the selected CSV. The metadata's `observation_ids` identify the records actually selected for the CSV.
+
+The raw responses retain public fields omitted from the normalized schema, such as obscuration, positional accuracy and captive status when supplied by iNaturalist. For later review, match a CSV `observation_id` to an observation's `id` under `responses[*].response.results`. The first response is the taxon lookup; observation pages follow. These files preserve the public response and do not recover hidden coordinates.
+
+For the v1 pilot, once your four species configs are ready, fetch each dataset once. In PowerShell:
+
+```powershell
+python -m src.qc_engine.inaturalist --config config/v1_langur.yaml
+python -m src.qc_engine.inaturalist --config config/v1_pangolin.yaml
+python -m src.qc_engine.inaturalist --config config/v1_hornbill.yaml
+python -m src.qc_engine.inaturalist --config config/v1_bulbul.yaml
+```
+
+For example, `dataset.input_path: data/raw/v1/langur/occurrences.csv` produces all three files under `data/raw/v1/langur/`. Check the metadata's `resolved_taxon` and `actual_record_count` before using the snapshot. Reuse that CSV for every evaluation attempt and keep its two JSON companions with it. Rerunning a fetch at the same output path replaces all three files, so use a different config input path or `--output` for a new snapshot. Live downloads remain ignored by Git; keep a separate backup of the frozen files.
 
 ### 2. Generate an oracle using the configured LLM
 
