@@ -31,9 +31,9 @@
   - Rationale: `per_page` conflated a pagination implementation detail with the actual experimental variable researchers care about — how many records to pull. Fixing this also resolved a real bug: v0 was silently working with far fewer observations than intended.
 
 - **D007 — Verbosity of "untestable adjacent concepts" commentary vs. token budget**
-  - Status: Tentative ⛔
-  - Decision: TBD — keep, shorten, or relocate (e.g. structured metadata instead of inline code comments) the prompt instruction asking the LLM to comment on constraints it couldn't implement.
-  - Rationale: Valuable design signal but consumes generation-token budget and may contribute to output (code) truncation.
+  - Status: Resolved (v1 prompt) ✅
+  - Decision: Omit requests for commentary about unimplemented or adjacent concepts. `prompts/v1.md` asks for Python without code comments, docstrings or extra metadata fields.
+  - Rationale: Keep output focused on executable geographic checks and conserve generation tokens. Comments still appeared in pilot outputs, so this resolves the prompt policy rather than establishing model compliance or the cause of earlier truncation.
 
 - **D008 — Empirical constraint classification to guide generation**
   - Status: Provisional ⚠️
@@ -46,23 +46,34 @@
   - Rationale: `config/v0.yaml` declares `latitude`/`longitude` as `type: number`, but `qc_engine/run.py` reads occurrence CSVs via `csv.DictReader`, so `check_record` always receives raw strings. Observed in v0/1 (isinstance-only check silently never fires) and v0/2 (empty-string cast to float raises, misclassified as "invalid" instead of "missing"). A QC-engine/prompt contract gap, not primarily an LLM-capability issue.
 
 - **D010 — Taxon-name check: redundant defensive validation or dead weight?**
-  - Status: Tentative ⛔
-  - Decision: TBD — decide whether generated oracles should validate `taxon_name` themselves (defensive, for mixed-species/manually-edited datasets) or omit it as dead code (v0's fetch step already constrains downloads to a single `taxon_id`, so the field is tautologically constant today).
-  - Rationale: Recurred in multiple v0 oracles. Also connects to an open extensibility question: v0 is scoped to a single species with taxon filtering handled upstream by the fetch step, but a future multi-species version would need to decide whether that filtering should remain the QC engine's responsibility, be pushed into each generated oracle, or both — this decision is a small first instance of that larger design question.
+  - Status: Resolved (v1 scope) ✅
+  - Decision: Exclude generated taxon-name validation from v1; taxon selection remains with the fetch step. `prompts/v1.md` also excludes generic quality-grade and observer validation.
+  - Rationale: Each v1 dataset is fetched for a single resolved taxon, and this iteration evaluates species-derived geography. Responsibility for filtering mixed-species or manually edited datasets remains open for a future interface.
 
 - **D011 — Unattributed run-to-run variance in schema-first-contamination rate**
   - Status: Tentative ⛔
   - Decision: TBD — not pursued further for now.
   - Rationale: Candidate factors, none investigated: (a) provider-side nondeterminism on Groq's serving stack for openai/gpt-oss-20b — MoE expert routing and/or reasoning-effort behavior potentially sensitive to batch composition/session context, outside client-side control; (b) uncontrolled temporal/session clustering — the original v0 runs were collected ad hoc across the early dev period, while the v0.1/4 ablation was interleaved within a single session, and this alone could account for the gap between the two measured baseline rates independent of any prompt or engine change.
 
-- **D012 — Mutation-testing feedback loop**
-  - Status: Tentative ⛔
-  - Decision: Build a synthetic-corruption harness (coordinate shifts, blanked fields, taxon swaps) to measure oracle detection rate, as a keep/ditch evaluation signal.
-  - Rationale: Provides a lightweight way to gauge whether a generated oracle actually improves detection of suspicious records, without requiring an extensive hand-labelled ground-truth dataset up front.
+- **D012 — Mutation testing for future evaluation**
+  - Status: Deferred ⛔
+  - Decision: Defer systematic RQ2 implementation-correctness evaluation beyond the interim pilot. Consider adapting mutation-testing concepts and techniques in future evaluation; no mutation harness or feedback loop is implemented for this checkpoint.
+  - Rationale: Following supervisor advice, prioritise preliminary source review and bounded real-record case analysis within the interim-reporting period. Successful generation and QC output creation do not establish implementation correctness, and constructed inconsistencies would remain distinct from independently verified real errors.
+
+- **D013 — Freeze article text and occurrence snapshots**
+  - Status: Resolved (v1) ✅
+  - Decision: Use Wikipedia article plain text rather than introductory summaries. Save the supplied knowledge text and assembled prompt, and reuse frozen knowledge with `--knowledge-file`. Retain the normalized occurrence CSV alongside complete public API responses and retrieval metadata for each species.
+  - Rationale: The pangolin summary lacked geographic information. Frozen inputs support repeatable generation, while public response metadata preserves captive status, obscuration and uncertainty information needed to interpret flags without redesigning the oracle interface under D003.
+
+- **D014 — Preliminary v1 evaluation and geographic grounding**
+  - Status: Provisional ⚠️
+  - Decision: Use four species, 100 frozen observations per species and three generated oracles per species. Review all generated conditions for RQ1 and six deliberately selected flagged cases for RQ3. Treat numerical geographic translations as additional assumptions requiring review; report qualitative findings rather than detection accuracy or a controlled reduction in contamination.
+  - Rationale: The pilot produced 12 oracles with 13 geographic conditions, but numerical boundaries were absent from the supplied text and some translations contradicted it. Case review identified legitimate exceptions, misleading flags and unresolved location provenance. Reliable geographic grounding, broader independent validation and treatment of uncertainty remain open.
 
 ## Open variables for later experiments
 
 - Prompt wording and source-text amount
+- Geographic grounding of place names and coordinate boundaries
 - Missing-value and probabilistic-statement treatment
 - Model (e.g., using NUS SOC LMMaaS) and decoding settings
 - Executable-rule representation format
