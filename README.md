@@ -134,17 +134,6 @@ The JSON files use the same directory and filename stem as the CSV, including wh
 
 The raw responses retain public fields omitted from the normalized schema, such as obscuration, positional accuracy and captive status when supplied by iNaturalist. For later review, match a CSV `observation_id` to an observation's `id` under `responses[*].response.results`. The first response is the taxon lookup; observation pages follow. These files preserve the public response and do not recover hidden coordinates.
 
-For the v1 pilot, once your four species configs are ready, fetch each dataset once. In PowerShell:
-
-```powershell
-python -m src.qc_engine.inaturalist --config config/v1_langur.yaml
-python -m src.qc_engine.inaturalist --config config/v1_pangolin.yaml
-python -m src.qc_engine.inaturalist --config config/v1_hornbill.yaml
-python -m src.qc_engine.inaturalist --config config/v1_bulbul.yaml
-```
-
-For example, `dataset.input_path: data/raw/v1/langur/occurrences.csv` produces all three files under `data/raw/v1/langur/`. Check the metadata's `resolved_taxon` and `actual_record_count` before using the snapshot. Reuse that CSV for every evaluation attempt and keep its two JSON companions with it. Rerunning a fetch at the same output path replaces all three files, so use a different config input path or `--output` for a new snapshot. Live downloads remain ignored by Git; keep a separate backup of the frozen files.
-
 ### 2. Generate an oracle using the configured LLM
 
 Wikipedia retrieval uses the MediaWiki API to request article plain text. It preserves section headings and applies no character or sentence limit. This is article prose, not a complete representation of infoboxes, range maps or other non-prose content. Missing pages, API errors and empty extracts stop generation instead of silently supplying empty knowledge.
@@ -208,6 +197,6 @@ See `docs/architecture.md` for the component relationships and `docs/decisions.m
 
 ## ℹ️ AI Tool Disclosure
 
-AI-assisted tools, including GPT-5.6 and Claude Sonnet 5, were utilized during the preparation and development of this repository. Specifically, these models assisted with:
+AI-assisted tools, including GPT-6.1 and Claude Sonnet 5.5, were utilized during the preparation and development of this repository. Specifically, these models assisted with:
 - Documentation Synthesis: Generating and structuring documentation content directly from manually maintained FYP notes and logs.
 - Code Implementation: Translating high-level architecture, design frameworks and development plans presented by the author into functional code.
