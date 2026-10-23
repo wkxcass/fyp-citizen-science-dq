@@ -42,7 +42,7 @@
 
 - **D009 — Schema/runtime type-contract mismatch**
   - Status: Resolved (v0.1) ✅
-  - Decision: The QC engine coerces CSV field values to their configured schema `type` via `normalize_record()`/`coerce_value()` before calling `check_record`; empty string is treated as missing (`None`), and unparseable-but-present values are left unchanged rather than collapsed into `None`, since malformed and missing are distinct conditions. The runtime type contract is also documented explicitly in `prompts/oracle_v0.1.md`.
+  - Decision: The QC engine coerces CSV field values to their configured schema `type` via `normalize_record()`/`coerce_value()` before calling `check_record`; empty string is treated as missing (`None`), and unparseable-but-present values are left unchanged rather than collapsed into `None`, since malformed and missing are distinct conditions. The runtime type contract is also documented explicitly in `prompts/v0.1.md`.
   - Rationale: `config/v0.yaml` declares `latitude`/`longitude` as `type: number`, but `qc_engine/run.py` reads occurrence CSVs via `csv.DictReader`, so `check_record` always receives raw strings. Observed in v0/1 (isinstance-only check silently never fires) and v0/2 (empty-string cast to float raises, misclassified as "invalid" instead of "missing"). A QC-engine/prompt contract gap, not primarily an LLM-capability issue.
 
 - **D010 — Taxon-name check: redundant defensive validation or dead weight?**
