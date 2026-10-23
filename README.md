@@ -199,7 +199,7 @@ The QC runner dynamically loads the configured oracle, applies `check_record(rec
 
 ## ❗ Configuration & Development Notes
 
-- Keep prompts versioned under `prompts/`; do not bury prompt text in Python code.
+- Keep prompts versioned as `prompts/<version>.md` (e.g., `v0.md`, `v0.1.md`, `v1.md`); select the template with `oracle_generation.prompt_path` in the YAML config. Do not bury prompt text in Python code.
 - Keep small, intentional fixtures under `data/raw/`; live downloads and generated outputs are ignored by Git.
 - Review generated Python before running it. v0.1 generates executable code, so the generated artifact is an experimental input rather than trusted production code.
 - Do not commit `.env`, API credentials, large downloads, or unreviewed generated artifacts.
