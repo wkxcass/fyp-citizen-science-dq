@@ -23,28 +23,13 @@ The current implementation keeps the stages separate so that later experiments c
 ## 💡 v1 Scope
 
 - Species: Raffles' Banded Langur (*Presbytis femoralis*), Sunda Pangolin (*Manis javanica*), Oriental Pied Hornbill (*Anthracoceros albirostris*), and Straw-headed Bulbul (*Pycnonotus zeylanicus*)
-- Knowledge source: frozen Wikipedia article text
+- Knowledge source: Wikipedia article text
 - Occurrence platform: iNaturalist
 - Dataset representation: the existing normalized schema in `config/v1_langur.yaml`, `config/v1_pangolin.yaml`, `config/v1_hornbill.yaml`, and `config/v1_bulbul.yaml`
-- Oracle generation: `prompts/v1.md` scopes generation to source-supported spatial/geographical review checks; the pilot uses `openai/gpt-oss-20b` via Groq
+- Oracle generation: `prompts/v1.md` scopes generation to source-supported spatial/geographical review checks; the pilot uses `openai/gpt-oss-20b` via Groq to produce Python
 - QC output: a CSV containing records flagged by the oracle
 
 v1 focuses on documented distribution and locality expectations. Habitat, elevation, seasonal and morphological checks are outside this iteration. Intermediate constraint representations, semantic verification, user interfaces, database design, automatic correction, and automatic deletion remain deferred. A flag is a candidate for review, not proof that the record is erroneous.
-
-### Preliminary checkpoint — 23 October 2026
-
-The pilot uses 100 frozen iNaturalist records per species, fetched on 21 October, and three generated oracles per species. All 12 generations succeeded. Unique flagged observation counts were:
-
-| Species | Run 1 | Run 2 | Run 3 |
-|---|---:|---:|---:|
-| Langur | 0 | 0 | 0 |
-| Pangolin | 7 | 7 | 7 |
-| Hornbill | 92 | 91 | 53 |
-| Bulbul | 0 | 0 | 0 |
-
-RQ1 review covered all 13 geographic conditions: none added quality-grade, observer or taxon-name validation, but all introduced numerical boundaries absent from the supplied text. Some translations contradicted the source, and some qualifiers were lost. This does not establish reduced contamination against a controlled baseline.
-
-RQ3 review of six deliberately selected flagged cases found five legitimate exceptions or misleading flags and one unresolved case; no new biological occurrence discrepancy was established among those cases. Captive status, specimen descriptions and obscured coordinates affected interpretation. These are qualitative findings, not accuracy estimates; zero flags do not establish absence of suspicious records. Systematic RQ2 correctness evaluation is deferred, with mutation-testing concepts under consideration for future evaluation. See `experiments/log.csv` and `docs/decisions.md`.
 
 ## 💻 Setup
 
@@ -83,7 +68,9 @@ LLM_API_KEY=your_groq_api_key_here
 
 The repository loads this file automatically when a command loads a config under `config/`. `.env` is ignored by Git and must never be committed.
 
-Each `config/v1_<species>.yaml` defines the species, source, iNaturalist endpoint, normalized schema, model, prompt path, input/output paths, and generated-oracle path. Command-line arguments are available as explicit per-run overrides. Earlier configs remain available; the reference smoke test below retains `config/v0.1.yaml` and its checked-in fixtures.
+Each `config/v1_<species>.yaml` defines the species, source, iNaturalist endpoint, normalized schema, model, prompt path, input/output paths, and generated-oracle path. Command-line arguments are available as explicit per-run overrides.
+
+The examples below use the langur config; substitute the other species' v1 configs as needed. For repeated evaluation, reuse the frozen occurrence files. Rerunning a fetch at the same output path replaces its snapshot files.
 
 ## ☁ Guide for Reference Smoke Test
 
@@ -93,7 +80,7 @@ This test exercises the QC engine without downloading data or calling an LLM. It
 
 ```bash
 python -m src.qc_engine.run \
-  --config config/v0.1.yaml \
+  --config config/v1_langur.yaml \
   --input data/raw/occurrences_sample.csv \
   --oracle src/oracle_gen/example_oracle.py
 pytest
@@ -103,7 +90,7 @@ pytest
 
 ```powershell
 python -m src.qc_engine.run `
-  --config config/v0.1.yaml `
+  --config config/v1_langur.yaml `
   --input data/raw/occurrences_sample.csv `
   --oracle src/oracle_gen/example_oracle.py
 pytest
@@ -112,7 +99,7 @@ pytest
 The command writes flagged records to the configured QC output path:
 
 ```text
-experiments/runs/v0.1/flagged_records.csv
+experiments/runs/v1/flagged_records_langur.csv
 ```
 
 The fixture is expected to produce one flagged record. The reference oracle is only a deterministic smoke-test oracle; it is not the LLM-generated artifact.
@@ -120,8 +107,6 @@ The fixture is expected to produce one flagged record. The reference oracle is o
 ## ⚙ Guide to Trigger Actual Pipeline
 
 This path fetches live iNaturalist observations, asks the configured LLM to generate an oracle, and runs that oracle against the fetched data.
-
-The examples use the langur config; substitute the other species' v1 configs as needed. For repeated evaluation, reuse the frozen occurrence files and knowledge text. Rerunning a fetch at the same output path replaces its snapshot files.
 
 ### 1. Fetch iNaturalist data
 
@@ -185,7 +170,7 @@ python -m src.oracle_gen.generate --config config/v1_langur.yaml
 
 The generated file is written to `experiments/runs/v1/generated_oracle_langur.py`. Inspect it before execution: it should define `check_record(record)` and should not contain Markdown code-fence markers.
 
-Both prompt-only and LLM-generation commands save the exact input text as `<output-stem>.knowledge.txt` and the assembled prompt as `<output-stem>.prompt.txt`, beside the configured or overridden oracle output. Prompt-only does not call the LLM or write an oracle. These input files are saved before any LLM call, including attempts whose generation later fails. For repeated attempts, pass the same reviewed source file with `--knowledge-file experiments/runs/v1/generated_oracle_langur.knowledge.txt` and use a distinct `--output` path for each oracle. When running QC, select that oracle with `--oracle` and a distinct flagged-record path with `--output`.
+Both prompt-only and LLM-generation commands save the exact input text as `<output-stem>.knowledge.txt` and the assembled prompt as `<output-stem>.prompt.txt`, beside the configured or overridden oracle output. Prompt-only does not call the LLM or write an oracle. These input files are saved before any LLM call, including attempts whose generation later fails.
 
 ### 3. Run QC on the fetched data
 
@@ -211,6 +196,21 @@ The QC runner dynamically loads the configured oracle, applies `check_record(rec
 - Do not commit `.env`, API credentials, large downloads, or unreviewed generated artifacts.
 
 See `docs/architecture.md` for the component relationships and `docs/decisions.md` for recorded design decisions.
+
+## 🏁 Preliminary checkpoint — 23 October 2026
+
+The pilot uses 100 frozen iNaturalist records per species, fetched on 21 October, and three generated oracles per species. All 12 generations succeeded. Unique flagged observation counts were:
+
+| Species | Run 1 | Run 2 | Run 3 |
+|---|---:|---:|---:|
+| Langur | 0 | 0 | 0 |
+| Pangolin | 7 | 7 | 7 |
+| Hornbill | 92 | 91 | 53 |
+| Bulbul | 0 | 0 | 0 |
+
+RQ1 review covered all 13 geographic conditions: none added quality-grade, observer or taxon-name validation, but all introduced numerical boundaries absent from the supplied text. Some translations contradicted the source, and some qualifiers were lost. This does not establish reduced contamination against a controlled baseline.
+
+RQ3 review of six deliberately selected flagged cases found five legitimate exceptions or misleading flags and one unresolved case; no new biological occurrence discrepancy was established among those cases. Captive status, specimen descriptions and obscured coordinates affected interpretation. These are qualitative findings, not accuracy estimates; zero flags do not establish absence of suspicious records. Systematic RQ2 correctness evaluation is deferred, with mutation-testing concepts under consideration for future evaluation. See `experiments/log.csv` and `docs/decisions.md`.
 
 ## ℹ️ AI Tool Disclosure
 
