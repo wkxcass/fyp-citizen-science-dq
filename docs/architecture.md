@@ -2,10 +2,10 @@
 
 The pipeline:
 
-1. Fetch Wikipedia article plain text for the configured species, or reuse frozen text with `--knowledge-file`.
+1. Fetch Wikipedia article plain text for the configured species.
 2. Combine that text with the normalized iNaturalist CSV schema and the spatial-generation instructions in `prompts/v1.md`.
 3. Save the knowledge text and assembled prompt beside the oracle output. Optionally call an OpenAI-compatible chat-completions endpoint, validate Python syntax and the `check_record` entry point, and save the generated module.
-4. Resolve the species through iNaturalist, fetch observations, and normalize them into CSV. Save the complete public responses in a companion `.raw.json` and retrieval settings, times, resolved taxon, selected IDs and counts in `.metadata.json`.
+4. Resolve the species through iNaturalist, fetch observations, and normalize them into CSV. Save the complete public responses in a companion `.raw.json` and retrieval metadata in `.metadata.json`.
 5. Normalize each CSV row to the schema's declared field types (empty string → `None`; unparseable-but-present values left unchanged), then load an oracle, call `check_record(record)` for each row, and write one output row per flag.
 
 The checked-in reference oracle exercises the QC mechanics without an LLM or live API. It is a test harness, not the research result.
@@ -17,7 +17,7 @@ The four `config/v1_<species>.yaml` files share the same occurrence interface an
     def check_record(record: dict) -> list[dict[str, str]]:
         ...
 
-An empty list means no applicable review flag; it can also represent a skipped assessment and does not validate the record. A returned dictionary contains only a stable flag_code and human-readable reason. The v1 prompt requires missing or unusable coordinates to be skipped rather than flagged as geographic inconsistencies. The prototype flags for human review; it does not automatically clean, correct, or delete records.
+An empty list means no applicable review flag; it can also represent a skipped assessment (the v1 prompt requires missing or unusable coordinates to be skipped rather than flagged as geographic inconsistencies) and does not validate the record. A returned dictionary contains only a stable flag_code and human-readable reason. The prototype flags for human review; it does not automatically clean, correct, or delete records.
 
 ## Deliberate boundaries
 
