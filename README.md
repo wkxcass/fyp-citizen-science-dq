@@ -210,7 +210,7 @@ The pilot uses 100 frozen iNaturalist records per species, fetched on 21 October
 
 RQ1 review covered all 13 geographic conditions: none added quality-grade, observer or taxon-name validation, but all introduced numerical boundaries absent from the supplied text. Some translations contradicted the source, and some qualifiers were lost. This does not establish reduced contamination against a controlled baseline.
 
-RQ3 review of six deliberately selected flagged cases found five legitimate exceptions or misleading flags and one unresolved case; no new biological occurrence discrepancy was established among those cases. Captive status, specimen descriptions and obscured coordinates affected interpretation. These are qualitative findings, not accuracy estimates; zero flags do not establish absence of suspicious records. Systematic RQ2 correctness evaluation is deferred, with mutation-testing concepts under consideration for future evaluation. See `experiments/log.csv` and `docs/decisions.md`.
+RQ3 review of six deliberately selected flagged cases found five legitimate exceptions or misleading flags and one unresolved case; no new biological occurrence discrepancy was established among those cases. Captive status, specimen descriptions and obscured coordinates affected interpretation. These are qualitative findings, not accuracy estimates; zero flags do not establish absence of suspicious records. Systematic RQ2 correctness evaluation is deferred, with mutation-testing concepts under consideration for future evaluation. See `experiments/runs/log.csv` and `docs/decisions.md`.
 
 ## ℹ️ AI Tool Disclosure
 
