@@ -132,10 +132,6 @@ For the langur input path ending in `occurrences_langur.csv`, each fetch writes:
 | `occurrences_langur.raw.json` | A `responses` list containing the taxon lookup and every fetched observation page. Each entry stores the request URL, parameters, UTC retrieval time and complete decoded JSON response. |
 | `occurrences_langur.metadata.json` | Start/end retrieval times in UTC, requested species, resolved taxon ID/name, requested/actual counts, exact request settings, selected observation IDs, schema mapping and companion filenames. |
 
-The JSON files use the same directory and filename stem as the CSV, including when `--output` overrides its location. The fetcher uses `dataset.api_base_url` and preserves the current ordering (`created_at`, descending). It stops at the requested count or when observations run out. Page size stays fixed across requests so page offsets remain consistent; the raw final page can contain more observations than the selected CSV. The metadata's `observation_ids` identify the records actually selected for the CSV.
-
-The raw responses retain public fields omitted from the normalized schema, such as obscuration, positional accuracy and captive status when supplied by iNaturalist. For later review, match a CSV `observation_id` to an observation's `id` under `responses[*].response.results`. The first response is the taxon lookup; observation pages follow. These files preserve the public response and do not recover hidden coordinates.
-
 ### 2. Generate an oracle using the configured LLM
 
 Wikipedia retrieval uses the MediaWiki API to request article plain text. It preserves section headings and applies no character or sentence limit. This is article prose, not a complete representation of infoboxes, range maps or other non-prose content. Missing pages, API errors and empty extracts stop generation instead of silently supplying empty knowledge.
