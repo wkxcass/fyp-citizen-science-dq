@@ -197,6 +197,28 @@ The QC runner dynamically loads the configured oracle, applies `check_record(rec
 
 See `docs/architecture.md` for the component relationships and `docs/decisions.md` for recorded decisions.
 
+## 🔍 Motivation Study
+
+A small, separate study of what species knowledge sources say versus what citizen-science platforms actually record. It supports the comparison table and `experiments/motivation_study/log.csv`.
+
+`scripts/platform_field_check.py` pulls up to 100 records per species from the iNaturalist API and from the GBIF copies of iNaturalist, Observation.org and eBird. It then counts how often each field is filled. No API keys or logins are needed.
+
+### Linux / Ubuntu
+
+```bash
+python scripts/platform_field_check.py --out experiments/motivation_study/snapshot_YYYY-MM-DD
+```
+
+### Windows PowerShell
+
+```powershell
+python scripts/platform_field_check.py --out experiments/motivation_study/snapshot_YYYY-MM-DD
+```
+
+- Outputs are CSV summaries (`*_fields.csv`, `record_counts.csv`, `gbif_issue_flags.csv`), a `run_log.txt` and a zip of everything.
+- The reference snapshot is `snapshot_2026-10-03`. Counts drift as platforms grow, so re-runs will differ slightly.
+- `sample_records.json` and the zip are git-ignored because they hold individual records.
+
 ## 🏁 Preliminary Checkpoint — 23 October 2026
 
 The pilot uses 100 frozen iNaturalist records per species, fetched on 21 October, and three generated oracles per species. All 12 generations succeeded. Unique flagged observation counts were:
