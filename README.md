@@ -197,7 +197,7 @@ The QC runner dynamically loads the configured oracle, applies `check_record(rec
 
 See `docs/architecture.md` for the component relationships and `docs/decisions.md` for recorded decisions.
 
-## 🏁 Preliminary checkpoint — 23 October 2026
+## 🏁 Preliminary Checkpoint — 23 October 2026
 
 The pilot uses 100 frozen iNaturalist records per species, fetched on 21 October, and three generated oracles per species. All 12 generations succeeded. Unique flagged observation counts were:
 
