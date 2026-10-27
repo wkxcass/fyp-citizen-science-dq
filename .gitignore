@@ -27,6 +27,7 @@ data/raw/*
 data/processed/*
 !data/processed/.gitkeep
 experiments/motivation_study/**/sample_records.json
+experiments/motivation_study/*.zip
 experiments/runs/*
 !experiments/runs/.gitkeep
 !experiments/runs/log.csv
