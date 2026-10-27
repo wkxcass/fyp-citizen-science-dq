@@ -1,0 +1,29 @@
+﻿source,species,retrieved,available,note
+inaturalist_raw,langur,100,378,
+inaturalist_raw,pangolin,100,294,
+inaturalist_raw,hornbill,100,9684,
+inaturalist_raw,bulbul,100,1199,
+inaturalist_raw,miss_joaquim,100,259,(NO exact match; used 'Papilionanthe hookeriana × teres')
+inaturalist_raw,rafflesia,100,100,(NO exact match; used 'Rafflesia arnoldi')
+inaturalist_raw,bougainvillea,100,19760,
+gbif_inaturalist,langur,100,194,Presbytis femoralis [EXACT]
+gbif_inaturalist,pangolin,100,173,Manis javanica [EXACT]
+gbif_inaturalist,hornbill,100,6385,Anthracoceros albirostris [EXACT]
+gbif_inaturalist,bulbul,100,749,Pycnonotus zeylanicus [EXACT]
+gbif_inaturalist,miss_joaquim,0,0,not in GBIF taxonomy
+gbif_inaturalist,rafflesia,56,56,Rafflesia arnoldi [FUZZY]
+gbif_inaturalist,bougainvillea,100,301,Bougainvillea spectabilis [EXACT]
+gbif_observation_org,langur,7,7,Presbytis femoralis [EXACT]
+gbif_observation_org,pangolin,0,0,Manis javanica [EXACT]
+gbif_observation_org,hornbill,100,2431,Anthracoceros albirostris [EXACT]
+gbif_observation_org,bulbul,100,319,Pycnonotus zeylanicus [EXACT]
+gbif_observation_org,miss_joaquim,0,0,not in GBIF taxonomy
+gbif_observation_org,rafflesia,1,1,Rafflesia arnoldi [FUZZY]
+gbif_observation_org,bougainvillea,9,9,Bougainvillea spectabilis [EXACT]
+gbif_ebird,langur,0,0,Presbytis femoralis [EXACT]
+gbif_ebird,pangolin,0,0,Manis javanica [EXACT]
+gbif_ebird,hornbill,100,74588,Anthracoceros albirostris [EXACT]
+gbif_ebird,bulbul,0,0,Pycnonotus zeylanicus [EXACT]
+gbif_ebird,miss_joaquim,0,0,not in GBIF taxonomy
+gbif_ebird,rafflesia,0,0,Rafflesia arnoldi [FUZZY]
+gbif_ebird,bougainvillea,0,0,Bougainvillea spectabilis [EXACT]

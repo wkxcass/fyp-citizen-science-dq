@@ -1,0 +1,8 @@
+﻿source,issue_flag,records
+gbif_inaturalist,TAXON_ID_NOT_FOUND,556
+gbif_inaturalist,CONTINENT_DERIVED_FROM_COORDINATES,553
+gbif_inaturalist,COORDINATE_ROUNDED,549
+gbif_observation_org,CONTINENT_COORDINATE_MISMATCH,1
+gbif_ebird,CONTINENT_DERIVED_FROM_COORDINATES,100
+gbif_ebird,TAXON_CONCEPT_ID_NOT_FOUND,100
+gbif_ebird,COORDINATE_ROUNDED,11

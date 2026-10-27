@@ -1,0 +1,135 @@
+﻿field,filled_pct_overall,pct_hornbill,example
+acceptedScientificName,100.0,100.0,"Anthracoceros albirostris (Shaw, 1808)"
+acceptedTaxonKey,100.0,100.0,2475991
+basisOfRecord,100.0,100.0,HUMAN_OBSERVATION
+catalogNumber,100.0,100.0,OBS1924783432
+class,100.0,100.0,Aves
+classKey,100.0,100.0,212
+classifications.7ddf754f-d193-4cc9-b351-99906754a03b.acceptedUsage.authorship,100.0,100.0,"(Shaw, 1808)"
+classifications.7ddf754f-d193-4cc9-b351-99906754a03b.acceptedUsage.code,100.0,100.0,ZOOLOGICAL
+classifications.7ddf754f-d193-4cc9-b351-99906754a03b.acceptedUsage.formattedName,100.0,100.0,"<i>Anthracoceros</i> <i>albirostris</i> (Shaw, 1808)"
+classifications.7ddf754f-d193-4cc9-b351-99906754a03b.acceptedUsage.genericName,100.0,100.0,Anthracoceros
+classifications.7ddf754f-d193-4cc9-b351-99906754a03b.acceptedUsage.key,100.0,100.0,67GSD
+classifications.7ddf754f-d193-4cc9-b351-99906754a03b.acceptedUsage.name,100.0,100.0,"Anthracoceros albirostris (Shaw, 1808)"
+classifications.7ddf754f-d193-4cc9-b351-99906754a03b.acceptedUsage.rank,100.0,100.0,SPECIES
+classifications.7ddf754f-d193-4cc9-b351-99906754a03b.acceptedUsage.specificEpithet,100.0,100.0,albirostris
+classifications.7ddf754f-d193-4cc9-b351-99906754a03b.classification[].key,100.0,100.0,CS5HF
+classifications.7ddf754f-d193-4cc9-b351-99906754a03b.classification[].name,100.0,100.0,Eukaryota
+classifications.7ddf754f-d193-4cc9-b351-99906754a03b.classification[].rank,100.0,100.0,DOMAIN
+classifications.7ddf754f-d193-4cc9-b351-99906754a03b.issues,100.0,100.0,['TAXON_CONCEPT_ID_NOT_FOUND']
+classifications.7ddf754f-d193-4cc9-b351-99906754a03b.iucnRedListCategoryCode,100.0,100.0,LC
+classifications.7ddf754f-d193-4cc9-b351-99906754a03b.taxonomicStatus,100.0,100.0,ACCEPTED
+classifications.7ddf754f-d193-4cc9-b351-99906754a03b.usage.authorship,100.0,100.0,"(Shaw, 1808)"
+classifications.7ddf754f-d193-4cc9-b351-99906754a03b.usage.code,100.0,100.0,ZOOLOGICAL
+classifications.7ddf754f-d193-4cc9-b351-99906754a03b.usage.formattedName,100.0,100.0,"<i>Anthracoceros</i> <i>albirostris</i> (Shaw, 1808)"
+classifications.7ddf754f-d193-4cc9-b351-99906754a03b.usage.genericName,100.0,100.0,Anthracoceros
+classifications.7ddf754f-d193-4cc9-b351-99906754a03b.usage.key,100.0,100.0,67GSD
+classifications.7ddf754f-d193-4cc9-b351-99906754a03b.usage.name,100.0,100.0,"Anthracoceros albirostris (Shaw, 1808)"
+classifications.7ddf754f-d193-4cc9-b351-99906754a03b.usage.rank,100.0,100.0,SPECIES
+classifications.7ddf754f-d193-4cc9-b351-99906754a03b.usage.specificEpithet,100.0,100.0,albirostris
+classifications.d7dddbf4-2cf0-4f39-9b2a-bb099caae36c.acceptedUsage.authorship,100.0,100.0,"(Shaw, 1808)"
+classifications.d7dddbf4-2cf0-4f39-9b2a-bb099caae36c.acceptedUsage.code,100.0,100.0,ZOOLOGICAL
+classifications.d7dddbf4-2cf0-4f39-9b2a-bb099caae36c.acceptedUsage.formattedName,100.0,100.0,"<i>Anthracoceros</i> <i>albirostris</i> (Shaw, 1808)"
+classifications.d7dddbf4-2cf0-4f39-9b2a-bb099caae36c.acceptedUsage.genericName,100.0,100.0,Anthracoceros
+classifications.d7dddbf4-2cf0-4f39-9b2a-bb099caae36c.acceptedUsage.key,100.0,100.0,2475991
+classifications.d7dddbf4-2cf0-4f39-9b2a-bb099caae36c.acceptedUsage.name,100.0,100.0,"Anthracoceros albirostris (Shaw, 1808)"
+classifications.d7dddbf4-2cf0-4f39-9b2a-bb099caae36c.acceptedUsage.rank,100.0,100.0,SPECIES
+classifications.d7dddbf4-2cf0-4f39-9b2a-bb099caae36c.acceptedUsage.specificEpithet,100.0,100.0,albirostris
+classifications.d7dddbf4-2cf0-4f39-9b2a-bb099caae36c.classification[].key,100.0,100.0,1
+classifications.d7dddbf4-2cf0-4f39-9b2a-bb099caae36c.classification[].name,100.0,100.0,Animalia
+classifications.d7dddbf4-2cf0-4f39-9b2a-bb099caae36c.classification[].rank,100.0,100.0,KINGDOM
+classifications.d7dddbf4-2cf0-4f39-9b2a-bb099caae36c.issues,100.0,100.0,['TAXON_CONCEPT_ID_NOT_FOUND']
+classifications.d7dddbf4-2cf0-4f39-9b2a-bb099caae36c.iucnRedListCategoryCode,100.0,100.0,LC
+classifications.d7dddbf4-2cf0-4f39-9b2a-bb099caae36c.taxonomicStatus,100.0,100.0,ACCEPTED
+classifications.d7dddbf4-2cf0-4f39-9b2a-bb099caae36c.usage.authorship,100.0,100.0,"(Shaw, 1808)"
+classifications.d7dddbf4-2cf0-4f39-9b2a-bb099caae36c.usage.code,100.0,100.0,ZOOLOGICAL
+classifications.d7dddbf4-2cf0-4f39-9b2a-bb099caae36c.usage.formattedName,100.0,100.0,"<i>Anthracoceros</i> <i>albirostris</i> (Shaw, 1808)"
+classifications.d7dddbf4-2cf0-4f39-9b2a-bb099caae36c.usage.genericName,100.0,100.0,Anthracoceros
+classifications.d7dddbf4-2cf0-4f39-9b2a-bb099caae36c.usage.key,100.0,100.0,2475991
+classifications.d7dddbf4-2cf0-4f39-9b2a-bb099caae36c.usage.name,100.0,100.0,"Anthracoceros albirostris (Shaw, 1808)"
+classifications.d7dddbf4-2cf0-4f39-9b2a-bb099caae36c.usage.rank,100.0,100.0,SPECIES
+classifications.d7dddbf4-2cf0-4f39-9b2a-bb099caae36c.usage.specificEpithet,100.0,100.0,albirostris
+collectionCode,100.0,100.0,EBIRD
+continent,100.0,100.0,ASIA
+country,100.0,100.0,Thailand
+countryCode,100.0,100.0,TH
+crawlId,100.0,100.0,24
+datasetCategory,100.0,100.0,['CitizenScience']
+datasetKey,100.0,100.0,4fa7b334-ce0d-4e88-aaae-2e0c138d049e
+day,100.0,100.0,15
+decimalLatitude,100.0,100.0,12.842222
+decimalLongitude,100.0,100.0,99.59111
+endDayOfYear,100.0,100.0,15
+eventDate,100.0,100.0,2024-01-15
+family,100.0,100.0,Bucerotidae
+familyKey,100.0,100.0,9720
+gadm.level0.gid,100.0,100.0,THA
+gadm.level0.name,100.0,100.0,Thailand
+gadm.level1.gid,100.0,100.0,THA.43_1
+gadm.level1.name,100.0,100.0,Phetchaburi
+gbifID,100.0,100.0,5295750598
+gbifRegion,100.0,100.0,ASIA
+genericName,100.0,100.0,Anthracoceros
+genus,100.0,100.0,Anthracoceros
+genusKey,100.0,100.0,2475986
+geodeticDatum,100.0,100.0,WGS84
+hostingOrganizationKey,100.0,100.0,e2e717bf-551a-4917-bdc9-4fa0f342c530
+http://unknown.org/crawl_attempt,100.0,100.0,24
+http://unknown.org/omitFromScheduledCrawl,100.0,100.0,true
+http://unknown.org/status,100.0,100.0,not_reviewed
+identifier,100.0,100.0,OBS1924783432
+identifiers[].identifier,100.0,100.0,OBS1924783432
+individualCount,100.0,100.0,3
+installationKey,100.0,100.0,7182d304-b0a2-404b-baba-2086a325c221
+institutionCode,100.0,100.0,CLO
+isInCluster,100.0,100.0,False
+isSequenced,100.0,100.0,False
+issues,100.0,100.0,"['CONTINENT_DERIVED_FROM_COORDINATES', 'TAXON_CONCEPT_ID_NOT"
+iucnRedListCategory,100.0,100.0,LC
+key,100.0,100.0,5295750598
+kingdom,100.0,100.0,Animalia
+kingdomKey,100.0,100.0,1
+lastCrawled,100.0,100.0,2025-10-29T11:02:38.172+00:00
+lastInterpreted,100.0,100.0,2026-09-02T06:26:11.931+00:00
+lastParsed,100.0,100.0,2026-09-02T06:26:11.931+00:00
+license,100.0,100.0,http://creativecommons.org/licenses/by/4.0/legalcode
+locality,100.0,100.0,Kaeng Krachan NP--Baan Maka Nature Lodge
+month,100.0,100.0,1
+occurrenceID,100.0,100.0,URN:catalog:CLO:EBIRD:OBS1924783432
+occurrenceStatus,100.0,100.0,PRESENT
+order,100.0,100.0,Bucerotiformes
+orderKey,100.0,100.0,716
+phylum,100.0,100.0,Chordata
+phylumKey,100.0,100.0,44
+protocol,100.0,100.0,DWC_ARCHIVE
+publishedByGbifRegion,100.0,100.0,ASIA
+publishingCountry,100.0,100.0,TH
+publishingOrgKey,100.0,100.0,e2e717bf-551a-4917-bdc9-4fa0f342c530
+recordedBy,100.0,100.0,obsr3817561
+scientificName,100.0,100.0,"Anthracoceros albirostris (Shaw, 1808)"
+scientificNameAuthorship,100.0,100.0,"(Shaw, 1808)"
+species,100.0,100.0,Anthracoceros albirostris
+speciesKey,100.0,100.0,2475991
+specificEpithet,100.0,100.0,albirostris
+startDayOfYear,100.0,100.0,15
+stateProvince,100.0,100.0,Phetchaburi
+taxonConceptID,100.0,100.0,avibase-avibase-082CFEA6
+taxonKey,100.0,100.0,2475991
+taxonRank,100.0,100.0,SPECIES
+taxonomicStatus,100.0,100.0,ACCEPTED
+vernacularName,100.0,100.0,Oriental Pied-Hornbill
+year,100.0,100.0,2024
+gadm.level2.gid,95.0,95.0,THA.43.4_1
+gadm.level2.name,95.0,95.0,Kaeng Krachan
+gadm.level3.gid,88.0,88.0,THA.43.4.2_1
+gadm.level3.name,84.0,84.0,Song Phi Nong
+county,35.0,35.0,Dehradun
+distanceFromCentroidInMeters,3.0,3.0,4096.209758341194
+dnaSequenceID,0.0,0.0,
+extensions,0.0,0.0,
+facts,0.0,0.0,
+identifiedByIDs,0.0,0.0,
+media,0.0,0.0,
+nucleotideSequence,0.0,0.0,
+recordedByIDs,0.0,0.0,
+relations,0.0,0.0,

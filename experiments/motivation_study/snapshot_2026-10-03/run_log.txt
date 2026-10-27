@@ -1,0 +1,35 @@
+== iNaturalist (raw API) ==
+  langur: 100 of 378 records
+  pangolin: 100 of 294 records
+  hornbill: 100 of 9684 records
+  bulbul: 100 of 1199 records
+  miss_joaquim: 100 of 259 records (NO exact match; used 'Papilionanthe hookeriana × teres')
+  rafflesia: 100 of 100 records (NO exact match; used 'Rafflesia arnoldi')
+  bougainvillea: 100 of 19760 records
+== gbif_inaturalist (via GBIF) ==
+  gbif_inaturalist: GBIF dataset key 50c9509d-22c7-4a22-a47d-8c48425ef4a7 is titled 'iNaturalist Research-grade Observations'
+  langur: 100 of 194 records (matched Presbytis femoralis [EXACT])
+  pangolin: 100 of 173 records (matched Manis javanica [EXACT])
+  hornbill: 100 of 6385 records (matched Anthracoceros albirostris [EXACT])
+  bulbul: 100 of 749 records (matched Pycnonotus zeylanicus [EXACT])
+  miss_joaquim: 'Papilionanthe Miss Joaquim' not found in GBIF taxonomy
+  rafflesia: 56 of 56 records (matched Rafflesia arnoldi [FUZZY])
+  bougainvillea: 100 of 301 records (matched Bougainvillea spectabilis [EXACT])
+== gbif_observation_org (via GBIF) ==
+  gbif_observation_org: GBIF dataset key 8a863029-f435-446a-821e-275f4f641165 is titled 'Observation.org, Nature data from around the World'
+  langur: 7 of 7 records (matched Presbytis femoralis [EXACT])
+  pangolin: 0 of 0 records (matched Manis javanica [EXACT])
+  hornbill: 100 of 2431 records (matched Anthracoceros albirostris [EXACT])
+  bulbul: 100 of 319 records (matched Pycnonotus zeylanicus [EXACT])
+  miss_joaquim: 'Papilionanthe Miss Joaquim' not found in GBIF taxonomy
+  rafflesia: 1 of 1 records (matched Rafflesia arnoldi [FUZZY])
+  bougainvillea: 9 of 9 records (matched Bougainvillea spectabilis [EXACT])
+== gbif_ebird (via GBIF) ==
+  gbif_ebird: GBIF dataset key 4fa7b334-ce0d-4e88-aaae-2e0c138d049e is titled 'EOD – eBird Observation Dataset'
+  langur: 0 of 0 records (matched Presbytis femoralis [EXACT])
+  pangolin: 0 of 0 records (matched Manis javanica [EXACT])
+  hornbill: 100 of 74588 records (matched Anthracoceros albirostris [EXACT])
+  bulbul: 0 of 0 records (matched Pycnonotus zeylanicus [EXACT])
+  miss_joaquim: 'Papilionanthe Miss Joaquim' not found in GBIF taxonomy
+  rafflesia: 0 of 0 records (matched Rafflesia arnoldi [FUZZY])
+  bougainvillea: 0 of 0 records (matched Bougainvillea spectabilis [EXACT])

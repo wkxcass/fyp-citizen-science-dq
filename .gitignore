@@ -26,6 +26,7 @@ data/raw/*
 !data/raw/.gitkeep
 data/processed/*
 !data/processed/.gitkeep
+experiments/motivation_study/**/sample_records.json
 experiments/runs/*
 !experiments/runs/.gitkeep
 notebooks/.ipynb_checkpoints/
